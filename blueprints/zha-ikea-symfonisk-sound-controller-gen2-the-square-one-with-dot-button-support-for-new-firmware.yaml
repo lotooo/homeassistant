@@ -3,8 +3,9 @@ blueprint:
   description: Control media with an IKEA Symfonisk sound controller GEN2 (Square
     one). Full media control with the media buttons (play/pause, volume up/down and
     skip/previous track). Fully customisable dot-buttons, with options for single,
-    double and long press for each one. Inspired by Pavoni and Atlantis_One
+    double and long press for each one. Started from work by Pavoni and Atlantis_One
     from https://community.home-assistant.io/t/zha-ikea-symfonisk-sound-controller-gen2-the-square-one-with-dot-button-support-for-new-firmware/573802/14
+    with dot and double-dot button events updated to work with mine
   domain: automation
   input:
     remote:
