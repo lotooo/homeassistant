@@ -1,0 +1,138 @@
+blueprint:
+  name: ZHA - Sunricher ZGRC-KEY-013
+  description: Control buttons of the remote
+  domain: automation
+  input:
+    remote:
+      name: Remote
+      description: Sunricher ZGRC-KEY-013 device to use.
+      selector:
+        device:
+          integration: zha
+          manufacturer: Sunricher
+          model: ZGRC-KEY-013
+          multiple: false
+    g1_on_press:
+      name: Group1 On Press
+      description: Action to run on Group1 ON button
+      default: []
+      selector:
+        action: {}
+    g1_off_press:
+      name: Group1 Off Press
+      description: Action to run on Group1 OFF button
+      default: []
+      selector:
+        action: {}
+    g2_on_press:
+      name: Group2 On Press
+      description: Action to run on Group2 ON button
+      default: []
+      selector:
+        action: {}
+    g2_off_press:
+      name: Group2 Off Press
+      description: Action to run on Group2 OFF button
+      default: []
+      selector:
+        action: {}
+    g3_on_press:
+      name: Group3 On Press
+      description: Action to run on Group3 ON button
+      default: []
+      selector:
+        action: {}
+    g3_off_press:
+      name: Group3 Off Press
+      description: Action to run on Group3 OFF button
+      default: []
+      selector:
+        action: {}
+    g4_on_press:
+      name: Group4 On Press
+      description: Action to run on Group4 ON button
+      default: []
+      selector:
+        action: {}
+    g4_off_press:
+      name: Group4 Off Press
+      description: Action to run on Group4 OFF button
+      default: []
+      selector:
+        action: {}
+    scene1_press:
+      name: Scene1
+      description: Action to run on Scene1 button
+      default: []
+      selector:
+        action: {}
+    scene2_press:
+      name: Scene2
+      description: Action to run on Scene2 button
+      default: []
+      selector:
+        action: {}
+mode: single
+max_exceeded: silent
+trigger:
+- platform: event
+  event_type: zha_event
+  event_data:
+    device_id: !input remote
+action:
+- variables:
+    command: '{{ trigger.event.data.command }}'
+    cluster_id: '{{ trigger.event.data.cluster_id }}'
+    endpoint_id: '{{ trigger.event.data.endpoint_id }}'
+    args: '{{ trigger.event.data.args }}'
+- choose:
+  - conditions:
+    - '{{ command == ''on'' }}'
+    - '{{ cluster_id == 6 }}'
+    - '{{ endpoint_id == 1 }}'
+    sequence: !input g1_on_press
+  - conditions:
+    - '{{ command == ''off'' }}'
+    - '{{ cluster_id == 6 }}'
+    - '{{ endpoint_id == 1 }}'
+    sequence: !input g1_off_press
+  - conditions:
+    - '{{ command == ''on'' }}'
+    - '{{ cluster_id == 6 }}'
+    - '{{ endpoint_id == 2 }}'
+    sequence: !input g2_on_press
+  - conditions:
+    - '{{ command == ''off'' }}'
+    - '{{ cluster_id == 6 }}'
+    - '{{ endpoint_id == 2 }}'
+    sequence: !input g2_off_press
+  - conditions:
+    - '{{ command == ''on'' }}'
+    - '{{ cluster_id == 6 }}'
+    - '{{ endpoint_id == 3 }}'
+    sequence: !input g3_on_press
+  - conditions:
+    - '{{ command == ''off'' }}'
+    - '{{ cluster_id == 6 }}'
+    - '{{ endpoint_id == 3 }}'
+    sequence: !input g3_off_press
+  - conditions:
+    - '{{ command == ''on'' }}'
+    - '{{ cluster_id == 6 }}'
+    - '{{ endpoint_id == 4 }}'
+    sequence: !input g4_on_press
+  - conditions:
+    - '{{ command == ''off'' }}'
+    - '{{ cluster_id == 6 }}'
+    - '{{ endpoint_id == 4 }}'
+    sequence: !input g4_off_press
+  - conditions:
+    - '{{ command == ''recall'' }}'
+    - '{{ cluster_id == 5 }}'
+    - '{{ trigger.event.data.params.scene_id == 1}}'
+    sequence: !input scene1_press
+  - conditions:
+    - '{{ command == ''recall'' }}'
+    - '{{ cluster_id == 5 }}'
+    - '{{ trigger.event.data.params.scene_id == 2}}'
+    sequence: !input scene2_press
