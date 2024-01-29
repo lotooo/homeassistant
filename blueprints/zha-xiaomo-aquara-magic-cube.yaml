@@ -12,6 +12,7 @@ blueprint:
         device:
           integration: zha
           manufacturer: LUMI
+          model: lumi.sensor_cube
     flip_90:
       name: Flip 90 degrees
       description: Actions to run when cube flips 90 degrees.
