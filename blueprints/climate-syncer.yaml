@@ -28,6 +28,7 @@ triggers:
   attribute: hvac_action
 variables:
   targets: !input targets
+  state: "{{ state_attr(trigger.entity_id, 'hvac_action') }}"
 actions:
 - repeat:
     for_each: "{{ targets }}"
@@ -35,5 +36,5 @@ actions:
     - action: logbook.log
       data:
         name: Climate Syncer
-        message: "Climate entity changed. Syncing its state to {{ repeat.item }}."
+        message: "Climate entity changed to {{ state }}. Syncing its state to {{ repeat.item }}."
         domain: climate
