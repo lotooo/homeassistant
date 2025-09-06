@@ -1,0 +1,162 @@
+blueprint:
+  name: zigbee2mqtt - Vesternet Zigbee remote control - 12 button
+  description: Control buttons of the remote
+  domain: automation
+  input:
+    remote:
+      name: Remote
+      description: Remote device to use.
+      selector:
+        device:
+          integration: mqtt
+          manufacturer: Vesternet
+          model: Zigbee remote control - 12 button
+          multiple: false
+    group1:
+      name: Group1 On Press
+      description: Light to manage on group 1
+      default: []
+      selector:
+        device:
+          entity:
+          - domain: light
+    group2:
+      name: Group2 On Press
+      description: Light to manage on group 2
+      default: []
+      selector:
+        device:
+          entity:
+          - domain: light
+    group3:
+      name: Group3 On Press
+      description: Light to manage on group 3
+      default: []
+      selector:
+        device:
+          entity:
+          - domain: light
+    group4:
+      name: Group4 On Press
+      description: Light to manage on group 4
+      default: []
+      selector:
+        device:
+          entity:
+          - domain: light
+    scene1:
+      name: Scene1
+      description: Action to run on Scene1 button
+      default: []
+      selector:
+        action: {}
+    scene2:
+      name: Scene2
+      description: Action to run on Scene2 button
+      default: []
+      selector:
+        action: {}
+mode: single
+max_exceeded: silent
+trigger:
+- domain: mqtt
+  device_id: !input remote
+  type: action
+  subtype: on_1
+  id: on_1
+- domain: mqtt
+  device_id: !input remote
+  type: action
+  subtype: off_1
+  id: off_1
+- domain: mqtt
+  device_id: !input remote
+  type: action
+  subtype: on_2
+  id: on_2
+- domain: mqtt
+  device_id: !input remote
+  type: action
+  subtype: off_2
+  id: off_2
+- domain: mqtt
+  device_id: !input remote
+  type: action
+  subtype: on_3
+  id: on_3
+- domain: mqtt
+  device_id: !input remote
+  type: action
+  subtype: off_3
+  id: off_3
+- domain: mqtt
+  device_id: !input remote
+  type: action
+  subtype: on_4
+  id: on_4
+- domain: mqtt
+  device_id: !input remote
+  type: action
+  subtype: off_4
+  id: off_4
+- domain: mqtt
+  device_id: !input remote
+  type: action
+  subtype: recall_1_1
+  id: s1
+- domain: mqtt
+  device_id: !input remote
+  type: action
+  subtype: recall_2_1
+  id: s2
+
+actions:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - on_1
+    action: light.turn_on
+    target: !input group1
+  - conditions:
+    - condition: trigger
+      id:
+      - off_1
+    action: light.turn_off
+    target: !input group1
+  - conditions:
+    - condition: trigger
+      id:
+      - on_2
+    action: light.turn_on
+    target: !input group2
+  - conditions:
+    - condition: trigger
+      id:
+      - off_2
+    action: light.turn_off
+    target: !input group2
+  - conditions:
+    - condition: trigger
+      id:
+      - on_3
+    action: light.turn_on
+    target: !input group3
+  - conditions:
+    - condition: trigger
+      id:
+      - off_3
+    action: light.turn_off
+    target: !input group3
+  - conditions:
+    - condition: trigger
+      id:
+      - s1
+    action: scene.turn_on
+    target: !input scene1
+  - conditions:
+    - condition: trigger
+      id:
+      - s2
+    action: scene.turn_on
+    target: !input scene2
