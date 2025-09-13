@@ -1,0 +1,40 @@
+blueprint:
+  author: Matthieu Serrepuy
+  name: Climate Syncer
+  description: Sync state between climate entities
+  domain: automation
+  input:
+    source:
+      name: Source
+      description: Source climate entity
+      selector:
+        entity:
+          multiple: false
+          filter:
+          -  domain: climate
+    targets:
+      name: Targets
+      description: Target climate entities to sync
+      selector:
+        entity:
+          multiple: true
+          filter:
+          -  domain: climate
+mode: single
+max_exceeded: silent
+triggers:
+- trigger: state
+  entity_id: !input source
+  attribute: hvac_action
+variables:
+  targets: !input targets
+  new_state: "{{ state_attr(trigger.entity_id, 'hvac_action') }}"
+actions:
+- repeat:
+    for_each: "{{ targets }}"
+    sequence:
+    - action: logbook.log
+      data:
+        name: Climate Syncer
+        message: "Climate entity changed to {{ new_state }}. Syncing its state to {{ repeat.item }}."
+        domain: climate
